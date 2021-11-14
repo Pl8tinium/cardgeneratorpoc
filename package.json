@@ -1,0 +1,16 @@
+{
+  "name": "twitterpreview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "main": "node main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "image-data-uri": "^2.0.1",
+    "merge-images": "^2.0.0",
+    "text-to-image": "^4.1.1"
+  }
+}

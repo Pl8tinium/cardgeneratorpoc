@@ -1,0 +1,30 @@
+
+2. change express input so it only takes /nft/hen/<nft-id>
+parse out the nft id, take the nft id and graph ql query it against
+hicdex.com to retrieve the data object that contains the display uri
+2.5 translate this script into js to retrieve the profile image
+https://gist.github.com/vaultec81/06c1e06fb5499485512cfde0e68a950e
+tzpData['logo'] is the image
+3. download those 2 images and do the card magic
+4. save the card under the nft id so ex 4524.png
+5. at the end the express endpoint should return the head html with the
+twitter metadata, including the path to the recently created card
+
+
+
+maybe impl.:
+
+caching for avatars/ images
+
+
+gateway.ipfs.io
+https://hicdex.com/objkt?objkt=4524
+/nft/hen/<nft-id>
+https://dns.pizza/ipfs/<ipfs hash>
+ipfs://<ipfs hash>
+
+
+
+done
+1. resize a bit and crop sites, w < h resize width to 300, otherwise oposite
+then crop it in the middle so the square is always filled

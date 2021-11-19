@@ -1,6 +1,7 @@
-nftPath = './img/nft.png'
-// nftPath = './img/nftBigHeight.png'
+// nftPath = './img/nft.png'
+nftPath = './img/nftBigHeight.png'
 // nftPath = './img/nftBigWidth.png'
+// nftPath = './img/nftBigWidth2.png'
 avatarPath = './img/avatar.png'
 backgroundPath = './img/background.png'
 twitterCardOutput = './img/card.png'
@@ -31,7 +32,7 @@ const resizeNft = async (nft) => {
     dimensions = await sharpWrapper.getDimensions(nft)
     
     // depending on the ratio.. h > w scale for width - w < h scale for height
-    scaleFor = dimensions.width < dimensions.height ? { height: cardHeight } : { width: cardWidth / 2 }
+    scaleFor = dimensions.width > dimensions.height ? { height: cardHeight } : { width: cardWidth / 2 }
 
     resizedImg = await sharpWrapper.resize(nft, scaleFor)
 
@@ -79,7 +80,9 @@ const mergeImages = async (resizedNft, avatar, profileInfoImg) => {
     ]
     return await mergeImages(imagesForCard, {
         Canvas: Canvas,
-        Image: Image
+        Image: Image,
+        width: cardWidth,
+        height: cardHeight
     })
 }
 
@@ -101,9 +104,10 @@ const main = async (info) => {
     // output the twitter card, needs to be stored in a structure / under an id the main page can statically link to
     // e.g. the filename will be the id of the user and the id is passed via the cardInfo object 
     await base64ToImg(card, twitterCardOutput)
+    // await base64ToImg(prependBase64Header(resizedNft), twitterCardOutput)
 }
 
 module.exports.createCard = main;
 
 // uncomment line below to debug without the server
-// main(info);
+main(info);

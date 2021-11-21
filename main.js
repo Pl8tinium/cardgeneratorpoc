@@ -123,7 +123,7 @@ const main = async (nftLocation) => {
     hicData = await hic.queryHicDex(nftId)
 
     // DEBUG, because the objkt 4524 seems not to own a tzprofile       
-    hicData.ownerAddress = 'tz1f7oZfADFuYV1A4iyv3Q7gZ694KZuxy2UP'
+    // hicData.ownerAddress = 'tz1f7oZfADFuYV1A4iyv3Q7gZ694KZuxy2UP'
     // fetch avatar uri & owner name
     tzProfileInfo = await tzP.getAvatarUri(hicData.ownerAddress)
     

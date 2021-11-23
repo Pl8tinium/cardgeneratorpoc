@@ -93,11 +93,13 @@ const base64ToImg = async (card, cardOutput) => {
     await imageDataURI.outputFile(card, cardOutput)
 }
 
-const prepareCardHeader = (nftId) => {
-    return `
+const prepareCardHeader = (nftId, hicData) => {
+    return `<head>
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Visit dns.xyz ...">        
-        <meta name="twitter:image" content="https://dns.xyz/INPUTSTORAGEENDPOINT/${nftId}.png">`
+        <meta name="twitter:title" content="${hicData.title}">        
+        <meta name="twitter:description" content="${hicData.description}" />
+        <meta name="twitter:image" content="https://dns.xyz/twittercards/${nftId}.png">
+        </head>`
 }
 
 const fetchImg = async (imgUri) => {
@@ -146,7 +148,7 @@ const main = async (nftLocation) => {
     await base64ToImg(card, cardOutputDir + nftId + '.png')
 
     // return metadata tags for twitter card
-    return prepareCardHeader(nftId)
+    return prepareCardHeader(nftId, hicData)
 }
 
 module.exports.createCard = main;

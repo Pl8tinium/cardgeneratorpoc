@@ -4,18 +4,11 @@ const cardCreator = require('./main.js');
 const bodyParser = require('body-parser');
 
 const app = express();
-const jsonParser = bodyParser.json()
+app.use('/twittercards', express.static('img/cards'))
 
-app.post('/', jsonParser, async (req, res) => {
-  console.log(req.body)
-  nftLocation = req.body.nftLocation
-  res.send(await cardCreator.createCard(nftLocation))  
+const jsonParser = bodyParser.json()
+app.get('/nft/hen/*', jsonParser, async (req, res) => {
+  res.send(await cardCreator.createCard(req.originalUrl))  
 });
 
 app.listen(3000, () => {});
-
-// {
-//   "nftLocation": "/nft/hen/<nft-id>",
-// }
-
-// eg.: /nft/hen/4524

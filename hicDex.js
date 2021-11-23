@@ -82,7 +82,8 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 const extractData = (data) => {
     return { nftHash: data.display_uri.substr(7),
              ownerAddress: data.creator.address,
-             title: data.title }
+             title: data.title, 
+             description: data.description }
 }
 
 async function doFetch(nftId) {

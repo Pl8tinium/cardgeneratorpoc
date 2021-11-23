@@ -6,8 +6,8 @@ const fs = require('fs')
 
 backgroundPath = './img/background.png'
 cardOutputDir = './img/cards/'
-// ipfsGateway = 'https://dns.pizza/ipfs/'
-ipfsGateway = 'https://gateway.ipfs.io/ipfs/'
+ipfsGateway = 'https://ipfs.dns.pizza/ipfs/'
+// ipfsGateway = 'https://gateway.ipfs.io/ipfs/'
 cardHeight = 300
 cardWidth = 600
 avatarHeight = 40
@@ -98,7 +98,7 @@ const prepareCardHeader = (nftId, hicData) => {
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="${hicData.title}">        
         <meta name="twitter:description" content="${hicData.description}" />
-        <meta name="twitter:image" content="https://dns.xyz/twittercards/${nftId}.png">
+        <meta name="twitter:image" content="/twittercards/${nftId}">
         </head>`
 }
 
@@ -118,14 +118,14 @@ const getAvatar = async (imgUri) => {
     return sharpWrapper.resize(Buffer.from(img, 'base64'), { width: avatarWidth, height: avatarHeight }) 
 }
 
-const main = async (nftLocation) => {
-    nftId = nftLocation.substr(9)
+const createCard = async (nftLocation) => {
+    nftId = nftLocation.substr(14)
 
     // get nft ipfs hash + owner for fetching avatar data   
     hicData = await hic.queryHicDex(nftId)
 
     // DEBUG, because the objkt 4524 seems not to own a tzprofile       
-    // hicData.ownerAddress = 'tz1f7oZfADFuYV1A4iyv3Q7gZ694KZuxy2UP'
+    hicData.ownerAddress = 'tz1f7oZfADFuYV1A4iyv3Q7gZ694KZuxy2UP'
     // fetch avatar uri & owner name
     tzProfileInfo = await tzP.getAvatarUri(hicData.ownerAddress)
     
@@ -145,13 +145,26 @@ const main = async (nftLocation) => {
     const card = await mergeImages(resizedNft, avatarImg, profileInfoImg);
     
     // output the twitter card
-    await base64ToImg(card, cardOutputDir + nftId + '.png')
+    // await base64ToImg(card, cardOutputDir + nftId + '.png')    
+    
+    // create card buffer
+    const cardBuffer = Buffer.from(card.split(',')[1], 'base64')
+
+    return cardBuffer
+}
+
+const getCardHeader = async (nftLocation) => {
+    nftId = nftLocation.substr(9)
+
+    // get nft ipfs hash + owner for fetching avatar data   
+    hicData = await hic.queryHicDex(nftId)
 
     // return metadata tags for twitter card
     return prepareCardHeader(nftId, hicData)
 }
 
-module.exports.createCard = main;
+module.exports.createCard = createCard;
+module.exports.getCardHeader = getCardHeader; 
 
 nftLoc = '/nft/hen/4524'
 // DEBUG uncomment line below to debug without the server

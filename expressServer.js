@@ -16,4 +16,4 @@ app.get('/twittercards/*', async (req, res) => {
   res.end(await cardCreator.createCard(req.originalUrl));
 });
 
-app.listen(3000, () => {});
+app.listen(process.env.PORT || 3000, () => {});

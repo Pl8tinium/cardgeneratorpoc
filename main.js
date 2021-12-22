@@ -95,12 +95,26 @@ const base64ToImg = async (card, cardOutput) => {
 }
 
 const prepareCardHeader = (nftId, hicData) => {
-    return `<head>
+    return `
+    <head>
+        <title>${hicData.title}</title>
+        <meta name="title" content="${hicData.title}">
+        <meta name="description" content="${hicData.description}">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="${HOST_URL}/nft/hen/${nftId}">
+        <meta property="og:title" content="${hicData.title}">
+        <meta property="og:description" content="${hicData.description}">
+        <meta property="og:image" content="${HOST_URL}/twittercards/${nftId}">
+
+        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="${HOST_URL}/nft/hen/${nftId}">
         <meta name="twitter:title" content="${hicData.title}">        
         <meta name="twitter:description" content="${hicData.description}" />
         <meta name="twitter:image" content="${HOST_URL}/twittercards/${nftId}">
-        </head>`
+    </head>`
 }
 
 const fetchImg = async (imgUri) => {

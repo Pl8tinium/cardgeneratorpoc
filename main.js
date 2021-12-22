@@ -7,6 +7,7 @@ const fs = require('fs')
 backgroundPath = './img/background.png'
 cardOutputDir = './img/cards/'
 ipfsGateway = 'https://ipfs.dns.pizza/ipfs/'
+HOST_URL = 'https://dns.xyz'
 // ipfsGateway = 'https://gateway.ipfs.io/ipfs/'
 cardHeight = 300
 cardWidth = 600
@@ -98,7 +99,7 @@ const prepareCardHeader = (nftId, hicData) => {
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="${hicData.title}">        
         <meta name="twitter:description" content="${hicData.description}" />
-        <meta name="twitter:image" content="/twittercards/${nftId}">
+        <meta name="twitter:image" content="${HOST_URL}/twittercards/${nftId}">
         </head>`
 }
 

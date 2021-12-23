@@ -87,10 +87,9 @@ const extractData = (data: {
   description: any;
 }) => {
   return {
+    ...data,
     nftHash: data.display_uri.substr(7),
     ownerAddress: data.creator.address,
-    title: data.title,
-    description: data.description,
   };
 };
 
@@ -103,4 +102,8 @@ async function doFetch(nftId: any) {
   return extractData(result);
 }
 
-module.exports.queryHicDex = doFetch;
+export const queryHicDex = doFetch;
+
+export default {
+  queryHicDex,
+};

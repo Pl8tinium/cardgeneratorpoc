@@ -1,7 +1,8 @@
-const hic = require("./hicDex");
-const tzP = require("./tzProfiles");
-const { getProfileInfo } = require("./ceramic");
-const sharp = require("sharp");
+import hic from "./hicDex";
+import tzP from "./tzProfiles";
+import { getProfileInfo } from "./ceramic";
+import sharp from "sharp";
+import { BasicProfile } from "@ceramicstudio/idx-constants";
 
 const backgroundPath = "./img/background.png";
 const ipfsGateway = "https://ipfs.dns.pizza/ipfs/";
@@ -23,6 +24,9 @@ const sharpWrapper = {
 const resizeNft = async (nft: Buffer) => {
   // get dimensions
   const dimensions = await sharpWrapper.getDimensions(nft);
+  if (dimensions.height === undefined || dimensions.width === undefined) {
+    throw new Error("Could not get dimensions");
+  }
 
   // depending on the ratio.. h > w scale for width - w < h scale for height
   const scaleFor =
@@ -37,8 +41,8 @@ const resizeNft = async (nft: Buffer) => {
 
 const generateProfileInfoImage = (
   tzProfileInfo: { name: any },
-  hicData: { title: any; creator: { name: any; address: any } },
-  ceramicProfile: { name: any }
+  hicData: any,
+  ceramicProfile: BasicProfile | null
 ) => {
   const cardDescription = `
     \n${hicData.title}\n\n\n
@@ -62,15 +66,14 @@ const generateProfileInfoImage = (
   });
 };
 
-const getCenterValuesForImg = async (
-  img:
-    | WithImplicitCoercion<string>
-    | { [Symbol.toPrimitive](hint: "string"): string }
-) => {
+const getCenterValuesForImg = async (img: string) => {
   // get dimensions
   const dimensions = await sharpWrapper.getDimensions(
     Buffer.from(img, "base64")
   );
+  if (dimensions.height === undefined || dimensions.width === undefined) {
+    throw new Error("Could not get dimensions");
+  }
 
   // calc positions so that the img is centered properly
   const positions = {
@@ -86,7 +89,7 @@ const prependBase64Header = (base64Img: { toString: (arg0: string) => any }) =>
 
 const mergeImages = async (
   resizedNft: any,
-  avatar: undefined,
+  avatar: Buffer | undefined,
   profileInfoImg: any
 ) => {
   const mergeImages = require("merge-images");
@@ -105,9 +108,11 @@ const mergeImages = async (
   ];
 
   if (avatar != undefined) {
-    const avatarPositions = await getCenterValuesForImg(avatar);
+    const avatarPositions = await getCenterValuesForImg(
+      avatar.toString("base64")
+    );
     imagesForCard.push({
-      src: prependBase64Header(avatar),
+      src: prependBase64Header(avatar.toString("base64")),
       x: cardWidth - avatarPositions.x,
       y: avatarPositions.y - cardHeight / 29,
     });
@@ -182,7 +187,7 @@ const getAvatar = async (imgUri: string) => {
   });
 };
 
-const createCard = async (nftLocation: string) => {
+export const createCard = async (nftLocation: string) => {
   const nftId = nftLocation.substr(14);
 
   // get nft ipfs hash + owner for fetching avatar data
@@ -229,7 +234,7 @@ const createCard = async (nftLocation: string) => {
   return cardBuffer;
 };
 
-const getCardHeader = async (nftLocation: string) => {
+export const getCardHeader = async (nftLocation: string) => {
   const nftId = nftLocation.substr(9);
 
   // get nft ipfs hash + owner for fetching avatar data
@@ -239,8 +244,10 @@ const getCardHeader = async (nftLocation: string) => {
   return prepareCardHeader(nftId, hicData);
 };
 
-module.exports.createCard = createCard;
-module.exports.getCardHeader = getCardHeader;
+export default {
+  createCard,
+  getCardHeader,
+};
 
 // const nftLoc = '/nft/hen/4524'
 // DEBUG uncomment line below to debug without the server

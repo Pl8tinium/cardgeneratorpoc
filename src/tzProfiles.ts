@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 /**
  * Get User claims from their tzprofile
@@ -38,4 +38,8 @@ const GetUserMetadata = async (walletAddr: any) => {
 };
 
 // GetUserMetadata('tz1f7oZfADFuYV1A4iyv3Q7gZ694KZuxy2UP')
-module.exports.getAvatarUri = GetUserMetadata;
+export const getAvatarUri = GetUserMetadata;
+
+export default {
+  getAvatarUri,
+};

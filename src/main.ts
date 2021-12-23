@@ -3,6 +3,10 @@ import tzP from "./tzProfiles";
 import { getProfileInfo } from "./ceramic";
 import sharp from "sharp";
 import { BasicProfile } from "@ceramicstudio/idx-constants";
+import textToImage from "text-to-image";
+import genericMergeImages from "merge-images";
+import { Canvas, Image } from "canvas";
+import axios from "axios";
 
 const backgroundPath = "./img/background.png";
 const ipfsGateway = "https://ipfs.dns.pizza/ipfs/";
@@ -54,7 +58,6 @@ const generateProfileInfoImage = (
     }\n
     Found on DNS.XYZ
     `;
-  const textToImage = require("text-to-image");
 
   return textToImage.generateSync(cardDescription, {
     maxWidth: cardWidth / 2,
@@ -92,9 +95,6 @@ const mergeImages = async (
   avatar: Buffer | undefined,
   profileInfoImg: any
 ) => {
-  const mergeImages = require("merge-images");
-  const { Canvas, Image } = require("canvas");
-
   const nftPositions = await getCenterValuesForImg(resizedNft);
 
   const imagesForCard = [
@@ -118,7 +118,7 @@ const mergeImages = async (
     });
   }
 
-  return await mergeImages(imagesForCard, {
+  return await genericMergeImages(imagesForCard, {
     Canvas: Canvas,
     Image: Image,
     width: cardWidth,
@@ -156,8 +156,6 @@ const prepareCardHeader = (
 };
 
 const fetchImg = async (imgUri: string) => {
-  const axios = require("axios");
-
   return String(
     await axios
       .get(imgUri, {

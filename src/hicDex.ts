@@ -67,7 +67,7 @@ async function fetchGraphQL(
   operationsDoc: string,
   operationName: string,
   variables: { id: any }
-) {
+): Promise<any> {
   const result = await fetch("https://api.hicdex.com/v1/graphql", {
     method: "POST",
     body: JSON.stringify({

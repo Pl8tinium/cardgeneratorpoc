@@ -108,6 +108,9 @@ const prepareCardHeader = (nftId, hicData) => {
         <meta property="og:title" content="${hicData.title}">
         <meta property="og:description" content="${hicData.description}">
         <meta property="og:image" content="${HOST_URL}/twittercards/${nftId}">
+        <meta property="og:image:secure_url" content="${HOST_URL}/twittercards/${nftId}">
+        <meta property="og:image:width" content="600">
+        <meta property="og:image:height" content="300">
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">

@@ -1,6 +1,6 @@
 const express = require("express");
 const request = require("request");
-const cardCreator = require("./main.js");
+const cardCreator = require("./main");
 const bodyParser = require("body-parser");
 
 const app = express();

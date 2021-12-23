@@ -7,8 +7,8 @@
     "dist/"
   ],
   "scripts": {
-    "start": "ts-node main.js",
-    "dev": "ts-node expressServer.js",
+    "start": "ts-node src/main.ts",
+    "dev": "ts-node src/expressServer.ts",
     "server": "node dist/expressServer.js",
     "build": "tsc -p tsconfig.json"
   },

@@ -41,14 +41,14 @@ const generateProfileInfoImage = (
   ceramicProfile: { name: any }
 ) => {
   const cardDescription = `
-    ${hicData.title}\n\n\n
+    \n${hicData.title}\n\n\n
     ${
       ceramicProfile?.name ??
       tzProfileInfo?.name ??
       hicData?.creator?.name ??
       hicData?.creator?.address
     }\n
-    Found on\nDNS.XYZ
+    Found on DNS.XYZ
     `;
   const textToImage = require("text-to-image");
 
@@ -109,7 +109,7 @@ const mergeImages = async (
     imagesForCard.push({
       src: prependBase64Header(avatar),
       x: cardWidth - avatarPositions.x,
-      y: avatarPositions.y - cardHeight / 8,
+      y: avatarPositions.y - cardHeight / 29,
     });
   }
 

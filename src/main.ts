@@ -3,7 +3,7 @@ import tzP from "./tzProfiles";
 import { getProfileInfo } from "./ceramic";
 import sharp from "sharp";
 import { BasicProfile } from "@ceramicstudio/idx-constants";
-import textToImage from "text-to-image";
+import { generateSync } from "text-to-image";
 import genericMergeImages from "merge-images";
 import { Canvas, Image } from "canvas";
 import axios from "axios";
@@ -59,7 +59,7 @@ const generateProfileInfoImage = (
     Found on DNS.XYZ
     `;
 
-  return textToImage.generateSync(cardDescription, {
+  return generateSync(cardDescription, {
     maxWidth: cardWidth / 2,
     customHeight: cardHeight,
     fontFamily: "Roboto",

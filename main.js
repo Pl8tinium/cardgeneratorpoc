@@ -100,6 +100,7 @@ const prepareCardHeader = (nftId, hicData) => {
         <title>${hicData.title}</title>
         <meta name="title" content="${hicData.title}">
         <meta name="description" content="${hicData.description}">
+        <meta name="robots" content="max-image-preview:large">
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
@@ -110,7 +111,6 @@ const prepareCardHeader = (nftId, hicData) => {
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="${HOST_URL}/nft/hen/${nftId}">
         <meta name="twitter:title" content="${hicData.title}">        
         <meta name="twitter:description" content="${hicData.description}" />
         <meta name="twitter:image" content="${HOST_URL}/twittercards/${nftId}">

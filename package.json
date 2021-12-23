@@ -4,20 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node main.js",
-    "server": "node expressServer.js"
+    "start": "ts-node main.js",
+    "server": "ts-node expressServer.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ceramicstudio/idx-constants": "^1.0.0",
+    "@self.id/core": "^0.2.0",
     "axios": "^0.24.0",
     "body-parser": "^1.19.0",
+    "caip": "^0.9.2",
     "express": "^4.17.1",
     "image-data-uri": "^2.0.1",
     "merge-images": "^2.0.0",
     "node-fetch": "^2.6.6",
     "request": "^2.88.2",
     "sharp": "^0.29.3",
-    "text-to-image": "^4.1.1"
+    "text-to-image": "^4.1.1",
+    "ts-node": "^10.4.0"
   }
 }

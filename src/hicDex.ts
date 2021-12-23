@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = require("node-fetch");
 
 const query = `
 query Objkt($id: bigint!) {
@@ -61,38 +61,46 @@ query Objkt($id: bigint!) {
     extra
     }
 }
-`
+`;
 
-async function fetchGraphQL(operationsDoc, operationName, variables) {
-    const result = await fetch(
-        "https://api.hicdex.com/v1/graphql",
-        {
-        method: "POST",
-        body: JSON.stringify({
-            query: operationsDoc,
-            variables: variables,
-            operationName: operationName
-        })
-        }
-    )
+async function fetchGraphQL(
+  operationsDoc: string,
+  operationName: string,
+  variables: { id: any }
+) {
+  const result = await fetch("https://api.hicdex.com/v1/graphql", {
+    method: "POST",
+    body: JSON.stringify({
+      query: operationsDoc,
+      variables: variables,
+      operationName: operationName,
+    }),
+  });
 
-    return await result.json()
+  return await result.json();
 }
 
-const extractData = (data) => {
-    return { nftHash: data.display_uri.substr(7),
-             ownerAddress: data.creator.address,
-             title: data.title, 
-             description: data.description }
+const extractData = (data: {
+  display_uri: string;
+  creator: { address: any };
+  title: any;
+  description: any;
+}) => {
+  return {
+    nftHash: data.display_uri.substr(7),
+    ownerAddress: data.creator.address,
+    title: data.title,
+    description: data.description,
+  };
+};
+
+async function doFetch(nftId: any) {
+  const { errors, data } = await fetchGraphQL(query, "Objkt", { id: nftId });
+  if (errors) {
+    console.error(errors);
+  }
+  const result = data.hic_et_nunc_token_by_pk;
+  return extractData(result);
 }
 
-async function doFetch(nftId) {
-    const { errors, data } = await fetchGraphQL(query, "Objkt", {"id": nftId });
-    if (errors) {
-        console.error(errors)
-    }
-    const result = data.hic_et_nunc_token_by_pk
-    return extractData(result)
-}
-
-module.exports.queryHicDex = doFetch
+module.exports.queryHicDex = doFetch;

@@ -1,6 +1,7 @@
 const hic = require("./hicDex");
 const tzP = require("./tzProfiles");
 const { getProfileInfo } = require("./ceramic");
+const sharp = require("sharp");
 
 const backgroundPath = "./img/background.png";
 const ipfsGateway = "https://ipfs.dns.pizza/ipfs/";
@@ -11,18 +12,15 @@ const avatarHeight = 60;
 const avatarWidth = 60;
 
 const sharpWrapper = {
-  init: () => (this.sharp = require("sharp")),
-  resize: async (img, scale) => {
-    return await this.sharp(img).resize(scale).toBuffer();
+  resize: async (img: any, scale: any) => {
+    return await sharp(img).resize(scale).toBuffer();
   },
-  getDimensions: async (img) => {
-    return await this.sharp(img).metadata();
+  getDimensions: async (img: any) => {
+    return await sharp(img).metadata();
   },
 };
 
-const resizeNft = async (nft) => {
-  sharpWrapper.init();
-
+const resizeNft = async (nft: Buffer) => {
   // get dimensions
   const dimensions = await sharpWrapper.getDimensions(nft);
 
@@ -37,7 +35,11 @@ const resizeNft = async (nft) => {
   return resizedImg.toString("base64");
 };
 
-const generateProfileInfoImage = (tzProfileInfo, hicData, ceramicProfile) => {
+const generateProfileInfoImage = (
+  tzProfileInfo: { name: any },
+  hicData: { title: any; creator: { name: any; address: any } },
+  ceramicProfile: { name: any }
+) => {
   const cardDescription = `
     ${hicData.title}\n\n\n
     ${
@@ -60,7 +62,11 @@ const generateProfileInfoImage = (tzProfileInfo, hicData, ceramicProfile) => {
   });
 };
 
-const getCenterValuesForImg = async (img) => {
+const getCenterValuesForImg = async (
+  img:
+    | WithImplicitCoercion<string>
+    | { [Symbol.toPrimitive](hint: "string"): string }
+) => {
   // get dimensions
   const dimensions = await sharpWrapper.getDimensions(
     Buffer.from(img, "base64")
@@ -75,10 +81,14 @@ const getCenterValuesForImg = async (img) => {
   return positions;
 };
 
-const prependBase64Header = (base64Img) =>
+const prependBase64Header = (base64Img: { toString: (arg0: string) => any }) =>
   `data:image/png;base64,${base64Img.toString("base64")}`;
 
-const mergeImages = async (resizedNft, avatar, profileInfoImg) => {
+const mergeImages = async (
+  resizedNft: any,
+  avatar: undefined,
+  profileInfoImg: any
+) => {
   const mergeImages = require("merge-images");
   const { Canvas, Image } = require("canvas");
 
@@ -95,7 +105,7 @@ const mergeImages = async (resizedNft, avatar, profileInfoImg) => {
   ];
 
   if (avatar != undefined) {
-    avatarPositions = await getCenterValuesForImg(avatar);
+    const avatarPositions = await getCenterValuesForImg(avatar);
     imagesForCard.push({
       src: prependBase64Header(avatar),
       x: cardWidth - avatarPositions.x,
@@ -111,12 +121,15 @@ const mergeImages = async (resizedNft, avatar, profileInfoImg) => {
   });
 };
 
-const base64ToImg = async (card, cardOutput) => {
+const base64ToImg = async (card: any, cardOutput: any) => {
   const imageDataURI = require("image-data-uri");
   await imageDataURI.outputFile(card, cardOutput);
 };
 
-const prepareCardHeader = (nftId, hicData) => {
+const prepareCardHeader = (
+  nftId: any,
+  hicData: { title: any; description: any }
+) => {
   return `
     <head>
         <title>${hicData.title}</title>
@@ -142,7 +155,7 @@ const prepareCardHeader = (nftId, hicData) => {
     </head>`;
 };
 
-const fetchImg = async (imgUri) => {
+const fetchImg = async (imgUri: string) => {
   const axios = require("axios");
 
   return String(
@@ -150,14 +163,17 @@ const fetchImg = async (imgUri) => {
       .get(imgUri, {
         responseType: "arraybuffer",
       })
-      .then((response) =>
-        Buffer.from(response.data, "binary").toString("base64")
+      .then(
+        (response: {
+          data:
+            | WithImplicitCoercion<string>
+            | { [Symbol.toPrimitive](hint: "string"): string };
+        }) => Buffer.from(response.data, "binary").toString("base64")
       )
   );
 };
 
-const getAvatar = async (imgUri) => {
-  sharpWrapper.init();
+const getAvatar = async (imgUri: string) => {
   const img = await fetchImg(imgUri);
 
   return sharpWrapper.resize(Buffer.from(img, "base64"), {
@@ -166,7 +182,7 @@ const getAvatar = async (imgUri) => {
   });
 };
 
-const createCard = async (nftLocation) => {
+const createCard = async (nftLocation: string) => {
   const nftId = nftLocation.substr(14);
 
   // get nft ipfs hash + owner for fetching avatar data
@@ -213,7 +229,7 @@ const createCard = async (nftLocation) => {
   return cardBuffer;
 };
 
-const getCardHeader = async (nftLocation) => {
+const getCardHeader = async (nftLocation: string) => {
   const nftId = nftLocation.substr(9);
 
   // get nft ipfs hash + owner for fetching avatar data

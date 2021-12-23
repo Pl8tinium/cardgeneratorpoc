@@ -2,10 +2,15 @@
   "name": "twitterpreview",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/expressServer.js",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "start": "ts-node main.js",
-    "server": "ts-node expressServer.js"
+    "dev": "ts-node expressServer.js",
+    "server": "node dist/expressServer.js",
+    "build": "tsc -p tsconfig.json"
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +28,8 @@
     "sharp": "^0.29.3",
     "text-to-image": "^4.1.1",
     "ts-node": "^10.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
   }
 }

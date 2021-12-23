@@ -126,11 +126,6 @@ const mergeImages = async (
   });
 };
 
-const base64ToImg = async (card: any, cardOutput: any) => {
-  const imageDataURI = require("image-data-uri");
-  await imageDataURI.outputFile(card, cardOutput);
-};
-
 const prepareCardHeader = (
   nftId: any,
   hicData: { title: any; description: any }
